@@ -15,7 +15,7 @@ function App() {
           <SpeedInsights/>
           <Analytics/>
           
-          <SignupPage></SignupPage>
+          <Home></Home>
         </div>
     </div>
   );
