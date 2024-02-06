@@ -4,6 +4,7 @@ import './App.css';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import Home from './Pages/Home';
+import SignupPage from './Pages/SignupPage';
 
 
 
@@ -13,7 +14,8 @@ function App() {
       <div>
           <SpeedInsights/>
           <Analytics/>
-          <Home></Home>
+          
+          <SignupPage></SignupPage>
         </div>
     </div>
   );
