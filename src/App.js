@@ -2,6 +2,7 @@ import Productlist from './features/Product-list/ProductList.js'
 import { Counter } from './features/counter/Counter';
 import './App.css';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from '@vercel/analytics/react';
 
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
     <div className='App'>
       <div>
           <Productlist></Productlist>
-          <SpeedInsights />
+          <SpeedInsights/>
+          <Analytics />
         </div>
     </div>
   );
