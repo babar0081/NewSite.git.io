@@ -118,7 +118,9 @@ export default function Cart() {
                           href="#"
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
+                          <Link to='/CheckOut'>
                           Checkout
+                          </Link>
                         </a>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
