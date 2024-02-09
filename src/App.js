@@ -17,7 +17,11 @@ import {
 import CartPage from './Pages/CartPage';
 import Checkout from './Pages/CheckOut';
 
+import ProductDetailsPage from './Pages/ProductDetailsPage';
+
 const router = createBrowserRouter([
+  
+  
   {
     path: "/",
     element:<Home></Home>,
@@ -38,6 +42,10 @@ const router = createBrowserRouter([
     path: "/CheckOut",
     element:<Checkout></Checkout>,
   },
+  {
+    path: "/ProductDetails",
+    element:<ProductDetailsPage></ProductDetailsPage>,
+  },
 ]);
 
 
@@ -57,3 +65,5 @@ function App() {
 
 
 export default App;
+
+
