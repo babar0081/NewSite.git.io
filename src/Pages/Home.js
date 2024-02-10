@@ -1,6 +1,6 @@
 import Navbar from "../features/Navbar/Navbar";
-import ProductDetails from "../features/Product-list/Components/ProductDetails";
-import ProductList from "../features/Product-list/Components/ProductList";
+import ProductDetails from "../features/product/Components/ProductDetails";
+import ProductList from "../features/product/Components/ProductList";
 import CartPage from "./CartPage";
 import ProductDetailsPage from "./ProductDetailsPage";
 
