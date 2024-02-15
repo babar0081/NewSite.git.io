@@ -12,6 +12,8 @@ const user = {
 const navigation = [
     {name: "Dashboard", href: "#", current: true},
     {name: "Team", href: "#", current: false},
+    {name: "Men's", href: "#", current: false},
+    {name: "Womens", href: "#", current: false},
 ];
 const userNavigation = [
     {name: "Your Profile", href: "#"},
@@ -61,8 +63,12 @@ function Navbar({children}) {
                                                 </a>
                                             ))}
                                         </div>
+                                        
                                     </div>
+                                    
                                 </div>
+                               
+
                                 <div className="hidden md:block">
                                     <div className="ml-4 flex items-center md:ml-6">
                                        
@@ -75,12 +81,13 @@ function Navbar({children}) {
                                             <span className="absolute -inset-1.5" />
                                             
                                             <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                                            
-                                        </button>
-                                       </Link>
-                                        <span className="inline-flex items-center rounded-md bg-gray-50 mb-5 z-10 -ml-4 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                            <span className="inline items-center absolute rounded-md bg-gray-50 -my-9 z-10  px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
                                                 3
-                                            </span>
+                                            </span>     
+                                        </button>
+                                        
+                                       
+                                       </Link>
 
                                         {/* Profile dropdown */}
                                         <Menu as="div" className="relative ml-3">
@@ -135,6 +142,7 @@ function Navbar({children}) {
                                 </div>
                             </div>
                         </div>
+                        
 
                         <Disclosure.Panel className="md:hidden">
                             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -203,11 +211,15 @@ function Navbar({children}) {
             <header className="bg-white shadow">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     <h1 className="text-3xl font-bold tracking-tight text-gray-900">Fashion Wear</h1>
+                    
+                    
                 </div>
             </header>
             <main>
                 <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{children}</div>
+            
             </main>
+            
         </div>
     );
 }
