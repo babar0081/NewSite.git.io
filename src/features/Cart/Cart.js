@@ -37,8 +37,12 @@ const products = [
 ]
 
 export default function Cart() {
+
   // const count = useSelector(selectCount);
   const dispatch = useDispatch();
+
+  
+
   const [open, setOpen] = useState(true)
 
 
