@@ -1,16 +1,10 @@
 const {Product} = require("../models/Product")
 
-exports.createProduct= async (req , res)=>{
+async function createProduct(req , res){
     const product = new Product(req.body);
-    try{
+    const response = await product.save();
+    console.log(response);
 
-        const doc = await product.save();
-        res.status(201).json(doc);
-    }
-    catch (err){
-res.status(400).json(err)
-    }
-    
     
 
 }
@@ -18,3 +12,5 @@ res.status(400).json(err)
 
 
 
+
+module.exports = createProduct
