@@ -3,7 +3,7 @@ const {Schema} = mongoose;
 
 
 const productSchema = new Schema({
-    title :{ type:String, required:true},
+    title :{ type:String, required:true , unique:true},
     description :{ type:String, required:true},
     discountPercentage :{ type:Number,min:[1 , 'wrong min discount'],max:[99,'wrong max discount'] },
     rating :{ type:Number,min:[0 , 'wrong min rating'],max:[5,'wrong max rating'] ,default:0},
@@ -17,5 +17,16 @@ const productSchema = new Schema({
 
     
 })
+
+
+
+productSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function(doc, ret) {
+    ret.id = ret._id; 
+    return ret;
+  }
+});
 
 exports.Product=  mongoose.model('Product', productSchema)
