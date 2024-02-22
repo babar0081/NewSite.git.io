@@ -60,6 +60,39 @@ exports.fetchAllProducts =    async function (req , res){
 
 
 
+exports.fetchProductById = async function(req,res){
+
+    const {id}=req.params;
+    try {
+        const products= await Product.findById(id)
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+
+}
+exports.UpdateProducts = async function(req,res){
+
+    const {id}=req.params;
+    try {
+        const products= await Product.findByIdAndUpdate(id  ,req.body,{new:true}  )
+        res.status(200).json(products);
+
+
+
+    } catch (error) {
+        res.status(400).json(error)
+        console.log(error)
+    }
+
+}
+
+
+
+
+
+
+
 
 
 

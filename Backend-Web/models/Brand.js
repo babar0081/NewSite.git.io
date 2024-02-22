@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 
 const brandSchema = new Schema({
     label :{ type:String, required:true , unique:true},
-    value :{ type:String, required:true , unique:true} ,
+    value :{ type:String, required:true ,unique:true } ,
     
     
 })
@@ -21,3 +21,4 @@ brandSchema.set('toJSON', {
 });
 
 exports.Brand=  mongoose.model('Brand', brandSchema)
+

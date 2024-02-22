@@ -2,19 +2,21 @@ const express = require('express')
 const server = express();
 const mongoose = require('mongoose')
 const productsRouter = require('./routes/Product.routes.js')
-const CategoriesRouter = require('./routes/Category.routes.js.js')
-const BrandsRouter = require('./routes/Brands.routes.js.js')
+const CategoriesRouter = require('./routes/Category.routes.js')
+const BrandsRouter = require('./routes/Brands.routes.js')
 const createProduct = require('./controller/Product.js');
-
+const cors = require('cors')
 
 
 // middlewears
-
+server.use(cors({
+exposedHeaders:['X-TOTAL-COUNT']
+}))
 
 server.use(express.json());
 server.use('/products', productsRouter.router)
-server.use('/categoriies', CategoriesRouter.router)
-server.use('/products', BrandsRouter.router)
+server.use('/categories', CategoriesRouter.router)
+server.use('/brands', BrandsRouter.router)
 
 main().catch(err=> console.log(err))
 async function main() {

@@ -1,17 +1,19 @@
+
+
 const mongoose = require('mongoose')
 const {Schema} = mongoose;
 
 
-const categorySchema = new Schema({
+const CategorySchema = new Schema({
     label :{ type:String, required:true , unique:true},
-    value :{ type:String, required:true , unique:true} ,
+    value :{ type:String, required:true ,unique:true } ,
     
     
 })
 
 
 
-categorySchema.set('toJSON', {
+CategorySchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: function(doc, ret) {
@@ -20,4 +22,6 @@ categorySchema.set('toJSON', {
   }
 });
 
-exports.Category=  mongoose.model('Category', categorySchema)
+exports.Category=  mongoose.model('Category', CategorySchema)
+
+
