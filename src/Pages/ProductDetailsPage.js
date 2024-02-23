@@ -10,6 +10,7 @@ function ProductDetailsPage() {
 
 
             <ProductDetails></ProductDetails>
+            
         </Navbar>
         </div>
      );

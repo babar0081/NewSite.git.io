@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
+// import React, { useState } from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import {
   
-  increment,
+//   increment,
   
-  incrementAsync,
+//   incrementAsync,
   
-  selectCount,
-} from '../authSlice';
+//   selectCount,
+// } from '../authSlice';
 import { Link } from 'react-router-dom';
 
 
 export default function Signup() {
 
   // const count = useSelector(selectCount);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
 
 

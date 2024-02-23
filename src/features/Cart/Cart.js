@@ -1,16 +1,16 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+// import { Dialog, Transition } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux';
-import { XMarkIcon } from '@heroicons/react/24/outline'
+// import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom';
-import {
+// import {
   
-  increment,
+//   increment,
   
-  incrementAsync,
+//   incrementAsync,
   
-  selectCount,
-} from './CartSlice';
+//   selectCount,
+// } from './CartSlice';
 const products = [
   {
     id: 1,
@@ -39,7 +39,7 @@ const products = [
 export default function Cart() {
 
   // const count = useSelector(selectCount);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   
 
@@ -119,12 +119,11 @@ export default function Cart() {
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                         <Link to='/Checkout'>
                       <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                        <Link
+                         
                         >
                           Checkout
-                        </a>
+                        </Link>
                       </div>
                           </Link>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

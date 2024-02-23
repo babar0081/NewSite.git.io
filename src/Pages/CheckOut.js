@@ -1,9 +1,9 @@
-import CartPage from "./CartPage";
+// import CartPage from "./CartPage";
 import { Link } from "react-router-dom";
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { useSelector, useDispatch } from 'react-redux';
-import { XMarkIcon } from '@heroicons/react/24/outline'
+// import { Fragment, useState } from 'react'
+// import { Dialog, Transition } from '@headlessui/react'
+// import { useSelector, useDispatch } from 'react-redux';
+// import { XMarkIcon } from '@heroicons/react/24/outline'
 const addresses = [
     {
         name: "Bilal Malik",

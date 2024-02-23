@@ -1,18 +1,18 @@
 
-import { Counter } from './features/counter/Counter';
+// import { Counter } from './features/counter/Counter';
 import './App.css';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import Home from './Pages/Home';
 import SignupPage from './Pages/SignupPage';
 import * as React from "react";
-import { createRoot } from "react-dom/client";
+// import { createRoot } from "react-dom/client";
 
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Link,
+  // Route,
+  // Link,
 } from "react-router-dom";
 import CartPage from './Pages/CartPage';
 import Checkout from './Pages/CheckOut';
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
     element:<Checkout></Checkout>,
   },
   {
-    path: "/ProductDetails/:id",
+    path: '/product-detail/:id',
     element:<ProductDetailsPage></ProductDetailsPage>,
   },
 ]);
