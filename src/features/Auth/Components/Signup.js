@@ -1,6 +1,6 @@
 // import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
 // import {
 //   increment,
 //   incrementAsync,
@@ -9,6 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 // } from '../authSlice';
 import {selectLoggedInUser , createUserAsync} from '../authSlice'
 import { Link } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
+
 
 
 export default function Signup() {
@@ -19,7 +21,6 @@ export default function Signup() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser)
@@ -29,7 +30,8 @@ export default function Signup() {
   return (
       <div>
         <div>
-          
+        {user && <Navigate to='/' replace={true}></Navigate>}
+
         {user?.email}
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -47,6 +49,7 @@ export default function Signup() {
           <form noValidate className="space-y-6" onSubmit={handleSubmit((data)=>{
             dispatch(createUserAsync({email:data.email , password:data.password}))
             console.log(data)
+            
           })}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">

@@ -4,6 +4,7 @@ import { createUsers } from './authAPI';
 const initialState = {
   LoggedInUser: null,
   status: 'idle',
+  error:null
 };
 
 
@@ -11,6 +12,14 @@ export const createUserAsync = createAsyncThunk(
   'user/createUser',
   async (userData) => {
     const response = await createUsers(userData);
+
+    return response.data;
+  }
+);
+export const checkUserAsync = createAsyncThunk(
+  'user/checkUser',
+  async (loginInfo) => {
+    const response = await createUsers(loginInfo);
 
     return response.data;
   }
@@ -44,12 +53,24 @@ export const counterSlice = createSlice({
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.LoggedInUser = action.payload;
+      })
+      .addCase(checkUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(checkUserAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.LoggedInUser = action.payload;
+      })
+      .addCase(checkUserAsync.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.error;
       });
   },
 });
 
 export const { increment } = counterSlice.actions;
 export const selectLoggedInUser = (state)=>state.auth.LoggedInUser
+export const selectError = (state)=>state.auth.error
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
