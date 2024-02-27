@@ -5,8 +5,9 @@ const productsRouter = require('./routes/Product.routes.js')
 const CategoriesRouter = require('./routes/Category.routes.js')
 const BrandsRouter = require('./routes/Brands.routes.js')
 const createProduct = require('./controller/Product.js');
+const userRouter = require('./routes/User.js')
+const authRouter = require('./routes/Auth.js')
 const cors = require('cors')
-
 
 // middlewears
 server.use(cors({
@@ -17,6 +18,8 @@ server.use(express.json());
 server.use('/products', productsRouter.router)
 server.use('/categories', CategoriesRouter.router)
 server.use('/brands', BrandsRouter.router)
+server.use('/user', userRouter.router)
+server.use('/auth', authRouter.router)
 
 main().catch(err=> console.log(err))
 async function main() {
