@@ -16,7 +16,7 @@ export function checkUser(loginInfo) {
     // const email = loginInfo.email
     // const password = loginInfo.password
    try{
-    const response = await fetch('http://localhost:8080/auth/loginUser',{
+    const response = await fetch('http://localhost:8080/auth/login',{
       method:'POST',
       body:JSON.stringify(loginInfo),
       headers:{'content-type':'application/json'}}
@@ -31,6 +31,7 @@ export function checkUser(loginInfo) {
       else{
         const error = await response.json();
         reject(error)
+        console.log(error)
       }
 
    }
