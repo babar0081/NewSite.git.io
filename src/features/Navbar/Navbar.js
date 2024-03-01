@@ -2,6 +2,8 @@ import {Fragment} from "react";
 import {Disclosure, Menu, Transition} from "@headlessui/react";
 import {Bars3Icon, ShoppingCartIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectItems } from "../Cart/CartSlice";
 
 const user = {
     name: "Tom Cook",
@@ -26,6 +28,7 @@ function classNames(...classes) {
 }
 
 function Navbar({children}) {
+    const items = useSelector(selectItems)
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-gray-800">
@@ -81,9 +84,9 @@ function Navbar({children}) {
                                             <span className="absolute -inset-1.5" />
                                             
                                             <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                                            <span className="inline items-center absolute rounded-md bg-gray-50 -my-9 z-10  px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                                                3
-                                            </span>     
+                                           { items.length>0 &&<span className="inline items-center absolute rounded-md bg-gray-50 -my-9 z-10  px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                                {items.length}
+                                            </span>     }
                                         </button>
                                         
                                        
@@ -186,9 +189,9 @@ function Navbar({children}) {
                                     
                                     </Link>
 
-                                        <span className="inline-flex items-center rounded-md mb-5 bg-gray-50 z-10 -ml-3 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                                            3
-                                        </span>
+                                    { items.length>0 &&<span className="inline-flex items-center rounded-md mb-5 bg-gray-50 z-10 -ml-3 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                    { items.length}
+                                        </span>}
                                 </div>
                                 <div className="mt-3 space-y-1 px-2">
                                     {userNavigation.map((item) => (

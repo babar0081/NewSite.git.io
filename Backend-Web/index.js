@@ -4,9 +4,9 @@ const mongoose = require('mongoose')
 const productsRouter = require('./routes/Product.routes.js')
 const CategoriesRouter = require('./routes/Category.routes.js')
 const BrandsRouter = require('./routes/Brands.routes.js')
-const createProduct = require('./controller/Product.js');
 const userRouter = require('./routes/User.js')
 const authRouter = require('./routes/Auth.js')
+const cartRouter = require('./routes/cart.js')
 const cors = require('cors')
 
 // middlewears
@@ -20,6 +20,7 @@ server.use('/categories', CategoriesRouter.router)
 server.use('/brands', BrandsRouter.router)
 server.use('/user', userRouter.router)
 server.use('/auth', authRouter.router)
+server.use('/cart', cartRouter.router)
 
 main().catch(err=> console.log(err))
 async function main() {
@@ -31,11 +32,6 @@ async function main() {
 server.get('/',(req, res)=>{
     res.json({status:"succes"})
 })
-
-// server.post('/products', createProduct());
-
-
-  
 
 
 server.listen(8080,()=>{

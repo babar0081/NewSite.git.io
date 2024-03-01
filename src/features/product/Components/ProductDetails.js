@@ -4,6 +4,8 @@ import { RadioGroup } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductByIdAsync, selectProductById } from '../productSlice';
 import { useParams } from 'react-router-dom';
+import { addToCartAsync } from '../../Cart/CartSlice';
+import { selectLoggedInUser } from '../../Auth/authSlice';
 
 // TODO: In server data we will add colors, sizes , highlights. to each product
 
@@ -42,7 +44,25 @@ export default function ProductDetail() {
   const product = useSelector(selectProductById);
   const dispatch = useDispatch();
   const params = useParams();
+  const user = useSelector(selectLoggedInUser)
+const handleCart= (e)=>{
+  e.preventDefault();
+if(items.findIndex((item)=>item.product.id === product.id)<0){
+console.log({items,product});
+const newItem={
+  
+  productId:product.id,
+  quantity:1,
+  user:user.id
+};
+dispatch(addToCartAsync(newItem));
+alert.error('Item added to the Cart')
+}
+else{
+  alert.error('Item Already Added')
 
+}
+}
   useEffect(() => {
     dispatch(fetchAllProductByIdAsync(params.id));
   }, [dispatch, params.id]);
@@ -287,6 +307,7 @@ export default function ProductDetail() {
                 </div>
 
                 <button
+                onClick={handleCart}
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
