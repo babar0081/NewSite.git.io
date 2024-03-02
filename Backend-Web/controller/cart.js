@@ -3,7 +3,7 @@ const {cart}= require('../models/cart.js')
 exports.fetchCartByUser =    async function (req , res){
     const {user}= req.query;
     try {
-        const cartItems = await cart.find({user:user}).populate('user').populate('product');
+        const cartItems = await cart.find({user:user}).populate('product');
     res.status(200).json(cartItems);
     
     } catch (error) {
