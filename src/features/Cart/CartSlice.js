@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addToCart,fetchItemsByUserId } from './CartAPI';
+import { addToCart,deleteItemsFromCart,fetchItemsByUserId, updateCart } from './CartAPI';
 
 const initialState = {
   value: 0,
@@ -19,6 +19,22 @@ export const fetchItemsByUserIdAsync = createAsyncThunk(
   'cart/fetchItemsByUserId',
   async (userId) => {
     const response = await fetchItemsByUserId(userId);
+
+    return response.data;
+  }
+);
+export const updateCartAsync = createAsyncThunk(
+  'cart/updateCart',
+  async (item) => {
+    const response = await updateCart(item);
+
+    return response.data;
+  }
+);
+export const deleteItemsFromCartAsync = createAsyncThunk(
+  'cart/deleteItemsFromCart',
+  async (itemId) => {
+    const response = await deleteItemsFromCart(itemId);
 
     return response.data;
   }
@@ -59,7 +75,34 @@ export const counterSlice = createSlice({
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.items=action.payload;
-      });
+      })
+      .addCase(updateCartAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      // .addCase(updateCartAsync.fulfilled, (state, action) => {
+      //   state.status = 'idle';
+      //   const index = state.items.findIndex(item=>item.id===action.payload.id)
+      //   state.items[index]=action.payload;
+      // })
+      .addCase(updateCartAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        const index = state.items.findIndex(item => item.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        } else {
+          // Item not found; handle accordingly (e.g., add it to the array)
+          state.items.push(action.payload);
+        }
+      })
+
+      .addCase(deleteItemsFromCartAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteItemsFromCartAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        const index = state.items.findIndex(item=>item.id===action.payload.id)
+        state.items.splice(index,1);
+      })
   },
 });
 
