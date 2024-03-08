@@ -6,6 +6,7 @@ const initialState = {
   items: [],
 };
 
+console.log('Cart Slice Initialized'); // Log the initialization of the slice
 
 export const addToCartAsync = createAsyncThunk(
   'cart/addToCart',
@@ -19,7 +20,7 @@ export const fetchItemsByUserIdAsync = createAsyncThunk(
   'cart/fetchItemsByUserId',
   async (userId) => {
     const response = await fetchItemsByUserId(userId);
-
+    console.log('API Response:', response); // Log the API response
     return response.data;
   }
 );
@@ -40,7 +41,7 @@ export const deleteItemsFromCartAsync = createAsyncThunk(
   }
 );
 
-export const counterSlice = createSlice({
+export const cartSlice = createSlice({
   name: 'cart',
   initialState,
 
@@ -72,49 +73,60 @@ export const counterSlice = createSlice({
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
       })
+      // .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
+      //   state.status = 'idle';
+      //   console.log('Fulfilled Payload:', action.payload); // Log the action payload
+      //   state.items=action.payload;
+      // })
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.items=action.payload;
+        console.log('Fulfilled Payload:', action.payload); // Log the action payload
+        if (Array.isArray(action.payload)) {
+          state.items = action.payload;
+        } else {
+          // Handle the case where the payload is not an array (e.g., log an error)
+          console.log('Error: Payload is not an array');
+        }
       })
+      
       .addCase(updateCartAsync.pending, (state) => {
         state.status = 'loading';
       })
-      // .addCase(updateCartAsync.fulfilled, (state, action) => {
-      //   state.status = 'idle';
-      //   const index = state.items.findIndex(item=>item.id===action.payload.id)
-      //   state.items[index]=action.payload;
-      // })
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(item => item.id === action.payload.id);
-        if (index !== -1) {
-          state.items[index] = action.payload;
-        } else {
-          // Item not found; handle accordingly (e.g., add it to the array)
-          state.items.push(action.payload);
-        }
+        const index = state.items.findIndex(item=>item.id===action.payload.id)
+        state.items[index]=action.payload;
       })
-
+      
       .addCase(deleteItemsFromCartAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(deleteItemsFromCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.items.findIndex(item=>item.id===action.payload.id)
+        const index =  state.items.findIndex(item=>item.id===action.payload.id)
         state.items.splice(index,1);
       })
+      // .addCase(resetCartAsync.pending, (state) => {
+      //   state.status = 'loading';
+      // })
+      // .addCase(resetCartAsync.fulfilled, (state, action) => {
+      //   state.status = 'idle';
+        
+      //   state.items=[]
+      // })
   },
 });
 
-export const { increment } = counterSlice.actions;
+export const { increment } = cartSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
+
+// export const selectItems = (state) => {
+//   return state.cart.items;
+// };
+
 export const selectItems = (state) => state.cart.items;
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
+export const selectCartStatus = (state) =>state.cart.status;
 
 
-export default counterSlice.reducer;
+
+export default cartSlice.reducer;

@@ -1,5 +1,4 @@
-
-// import { Counter } from './features/counter/Counter';
+import { ToastContainer } from 'react-toastify';
 import './App.css';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
@@ -82,6 +81,8 @@ function App() {
   },[disptach,user])
   return (
     <div className='App'>
+              <ToastContainer />
+
       <div>
           <SpeedInsights/>
           <Analytics/>

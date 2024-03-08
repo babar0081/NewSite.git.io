@@ -1,4 +1,6 @@
-import {toast} from "react-toastify";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {useState, useEffect} from "react";
 import {StarIcon} from "@heroicons/react/20/solid";
 import {RadioGroup} from "@headlessui/react";
@@ -39,21 +41,7 @@ function classNames(...classes) {
 }
 
 // Function to display toast notifications with different types
-function showToastAlert(message, type = "success") {
-    switch (type) {
-        case "success":
-            toast.success(message);
-            break;
-        case "error":
-            toast.error(message);
-            break;
-        case "warning":
-            toast.warn(message);
-            break;
-        default:
-            toast(message); // Use default behavior for other types
-    }
-}
+
 
 // TODO : Loading UI
 
@@ -65,7 +53,7 @@ export default function ProductDetail() {
     const params = useParams();
     const items = useSelector(selectItems);
     const user = useSelector(selectLoggedInUser);
-
+    
     // const handleCart= (e)=>{
     //   e.preventDefault();
     //     if(items.findIndex((item)=>item.product.id===product.id)<0){
@@ -88,10 +76,11 @@ export default function ProductDetail() {
 
     const handleCart = (e) => {
         e.preventDefault();
-
+        console.log(items)
         // Check if items is an array before using findIndex
         if (Array.isArray(items)) {
-            if (items.findIndex((item) => item.product.id === product.id) < 0) {
+            if (items.findIndex((item) => item.product.id===product.id) < 0) {
+                console.log({items,product})
                 const newItem = {
                     product: product.id,
                     quantity: 1,
@@ -99,9 +88,9 @@ export default function ProductDetail() {
                 };
 
                 dispatch(addToCartAsync(newItem));
-                toast.success("Item is added to your cart!");
+               toast.success('Item is added to your cart!')
             } else {
-                toast.error("Item is already added in your cart");
+              toast.success('Item is already added in your cart')
             }
         } else {
             console.error("Items is not an array:", items);

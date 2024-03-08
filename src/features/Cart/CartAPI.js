@@ -28,10 +28,24 @@ export function fetchItemsByUserId(userId) {
   });
 }
 
+// export function fetchItemsByUserId(userId) {
+//   const url = new URL('http://localhost:8080/cart');
+//   url.searchParams.append('user', userId);
+
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const response = await fetch(url);
+//       const data = await response.json();
+//       resolve({ data });
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// }
 export function updateCart(update) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch('http://localhost:8080/cart?user='+update.id,{
+      const response = await fetch('http://localhost:8080/cart/'+update.id,{
         method: 'PATCH',
         body: JSON.stringify(update),
         headers: { 'content-type': 'application/json' }
@@ -47,7 +61,7 @@ export function updateCart(update) {
 export function deleteItemsFromCart(itemId) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch('http://localhost:8080/cart?user='+itemId,{
+      const response = await fetch('http://localhost:8080/cart/'+itemId,{
         method: 'DELETE',
         headers: { 'content-type': 'application/json' }
       });

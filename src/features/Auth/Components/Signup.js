@@ -24,7 +24,7 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser)
-  console.log(errors)
+  
 
 
   return (

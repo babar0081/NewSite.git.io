@@ -1,9 +1,12 @@
-import { Fragment, useState } from 'react'
-// import { Dialog, Transition } from '@headlessui/react'
+import { useState } from 'react'
+
 import { useSelector, useDispatch } from 'react-redux';
-// import { XMarkIcon } from '@heroicons/react/24/outline'
+
 import { Link, Navigate } from 'react-router-dom';
 import { discountedPrice } from '../../app/Constants'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+  import 'react-toastify/dist/ReactToastify.css';
 import { deleteItemsFromCartAsync, selectItems,updateCartAsync } from './CartSlice';
 
 export default function Cart() {
@@ -15,16 +18,23 @@ export default function Cart() {
 
   const [open, setOpen] = useState(true)
 const items = useSelector(selectItems)
+console.log({items})
 const totalAmount =items.reduce((amount,item)=>discountedPrice(item.product)*item.quantity + amount,0)
 const totalItems =items.reduce((total,item)=>item.quantity + total,0)
 
-const handleQuantity = (e,item)=>{
-dispatch( updateCartAsync({id:item.id,quantity:+e.target.value}));
-}
+const handleQuantity = (e, item) => {
+  
+  
+  
+  dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }));
+  toast.success("Quantity Updated Successfully!"); 
+};
 
-const handleRemove = (e,id)=>{
-dispatch(deleteItemsFromCartAsync(id))
-}
+const handleRemove = (e, id) => {
+  dispatch(deleteItemsFromCartAsync(id));
+  toast.success("Item Removed from Cart!"); 
+  
+};
   return (
       
         

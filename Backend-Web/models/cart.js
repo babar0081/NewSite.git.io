@@ -21,4 +21,4 @@ cartSchema.set('toJSON', {
   }
 });
 
-exports.cart=  mongoose.model('cart', cartSchema)
+exports.Cart=  mongoose.model('Cart', cartSchema)
