@@ -1,5 +1,7 @@
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import { SnackbarProvider } from 'notistack';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import Home from './Pages/Home';
@@ -81,8 +83,8 @@ function App() {
   },[disptach,user])
   return (
     <div className='App'>
-              <ToastContainer />
-
+      <SnackbarProvider/>
+              <ToastContainer/>
       <div>
           <SpeedInsights/>
           <Analytics/>

@@ -1,6 +1,6 @@
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
+
+import Swal from 'sweetalert2';
 import {useState, useEffect} from "react";
 import {StarIcon} from "@heroicons/react/20/solid";
 import {RadioGroup} from "@headlessui/react";
@@ -88,9 +88,24 @@ export default function ProductDetail() {
                 };
 
                 dispatch(addToCartAsync(newItem));
-               toast.success('Item is added to your cart!')
+                Swal.fire({
+                    title: 'Added!',
+                    text: 'The item has been Added To Your cart.',
+                    icon: 'success',
+                    timer: 3000, // 3000 milliseconds = 3 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                  });
+              
             } else {
-              toast.success('Item is already added in your cart')
+                Swal.fire({
+                    title: 'Already Existed!',
+                    text: 'The item is Already Exists In Your Cart.',
+                    icon: 'info',
+                    timer: 3000, // 3000 milliseconds = 3 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                  });
             }
         } else {
             console.error("Items is not an array:", items);

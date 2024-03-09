@@ -1,4 +1,5 @@
-// import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -24,10 +25,28 @@ export default function Login() {
     
     formState: { errors },
   } = useForm();
-  // const count = useSelector(selectCount);
+  
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser)
-
+  const notification =((data) => {
+    dispatch(checkUserAsync({ email: data.email, password: data.password }))
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful!',
+          text: 'You have Successfully Logged In.',
+          confirmButtonText: 'Okay',
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      })
+      .catch((error) => {
+        console.error('Login error:', error);
+        // Handle login error if needed
+      });
+  });
+  
 
   return (
       <div>
@@ -47,11 +66,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form noValidate className="space-y-6" onSubmit={handleSubmit((data)=>{
-            dispatch(checkUserAsync({email:data.email , password:data.password}))
-            console.log(data)
-            
-          })}>
+          <form noValidate className="space-y-6" onSubmit={handleSubmit(notification)}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address

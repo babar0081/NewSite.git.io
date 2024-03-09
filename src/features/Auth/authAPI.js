@@ -13,6 +13,20 @@ export function createUsers(userData) {
   }
   );
 }
+export function updateUser(update) {
+  return new Promise(async (resolve) =>{
+    // will use for live backend server 
+    const response = await fetch('http://localhost:8080/auth/'+update.id,{
+    // const response = await fetch('http://localhost:8080/users',{
+      method:'PATCH',
+      body:JSON.stringify(update),
+      headers:{'content-type':'application/json'}
+    })
+    const data = await response.json()
+    resolve({data})
+  }
+  );
+}
 
 
 // will use this for backend live server 

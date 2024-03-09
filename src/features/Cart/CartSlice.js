@@ -30,6 +30,7 @@ export const updateCartAsync = createAsyncThunk(
     const response = await updateCart(item);
 
     return response.data;
+    
   }
 );
 export const deleteItemsFromCartAsync = createAsyncThunk(
@@ -69,6 +70,9 @@ export const cartSlice = createSlice({
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.items.push(action.payload);
+  
+        // Add toast notification here
+        
       })
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
@@ -96,6 +100,7 @@ export const cartSlice = createSlice({
         state.status = 'idle';
         const index = state.items.findIndex(item=>item.id===action.payload.id)
         state.items[index]=action.payload;
+        
       })
       
       .addCase(deleteItemsFromCartAsync.pending, (state) => {

@@ -1,6 +1,7 @@
 // import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from "react-hook-form"
+import Swal from 'sweetalert2';
 // import {
 //   increment,
 //   incrementAsync,
@@ -24,8 +25,24 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser)
+  const notification =handleSubmit((data)=>{
+      dispatch(createUserAsync({email:data.email , password:data.password,addresses:[]})).then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Succesfull',
+          text: 'Your Account Has been Created Succesfully',
+          confirmButtonText: 'Okay',
+          timer: 1500,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      })
+      .catch((error) => {
+        console.error('Sign Up error:', error);
+        // Handle login error if needed
+      });
   
-
+    })
 
   return (
       <div>
@@ -46,11 +63,7 @@ export default function Signup() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form noValidate className="space-y-6" onSubmit={handleSubmit((data)=>{
-            dispatch(createUserAsync({email:data.email , password:data.password}))
-            console.log(data)
-            
-          })}>
+          <form noValidate className="space-y-6" onSubmit={handleSubmit(notification)}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
