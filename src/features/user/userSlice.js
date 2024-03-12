@@ -8,7 +8,7 @@ const initialState = {
 
 
 export const fetchLoggedInUserOrderAsync = createAsyncThunk(
-  'user/fetchLoggedInUser',
+  'user/fetchLoggedInUserOrders',
   async (id) => {
     const response = await fetchLoggedInUserOrders(id);
 

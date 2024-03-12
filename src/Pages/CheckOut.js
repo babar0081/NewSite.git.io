@@ -28,14 +28,14 @@ const addresses = [
     },
 ];
 
-const countries = [
-    {value: "AF", label: "Afghanistan"},
-    {value: "AX", label: "Åland Islands"},
-    {value: "AL", label: "Albania"},
-    {value: "DZ", label: "Algeria"},
-];
 
-function Checkout() {
+export default function Checkout() {
+    const countries = [
+        {value: "AF", label: "Afghanistan"},
+        {value: "AX", label: "Åland Islands"},
+        {value: "AL", label: "Albania"},
+        {value: "DZ", label: "Algeria"},
+    ];
     const user = useSelector(selectLoggedInUser);
     const {
         register,
@@ -115,7 +115,7 @@ function Checkout() {
         });
     };
     const handleAddress = (e) => {
-        setSelectedAddress(user.address[e.target.value]);
+        setSelectedAddress(user.addresses [e.target.value]);
     };
     const handlePayment = (e) => {
         setPaymentMethod(e.target.value);
@@ -126,22 +126,24 @@ function Checkout() {
             items, 
             totalAmount, 
             totalItems, 
-            user, 
+            user:user.id, 
             paymentMethod,
             selectedAddress,
             status:'pending'
             };
         dispatch(createOrderAsyc(order));
     }   
-    else{
-    Swal.fire({
-        icon: "info",
-        title: "",
-        timerProgressBar: true,
-        showConfirmButton: true,
-        timer: 1000, // Close the notification after 1.5 seconds
-    });
+    else {
+        Swal.fire({
+            icon: "info",
+            title: "",
+            timerProgressBar: true,
+            showConfirmButton: true,
+            timer: 1000, // Close the notification after 1.5 seconds
+        });
     }
+
+}
     const [selectedCountry, setSelectedCountry] = useState(null);
 
     const countryChange = (event) => {
@@ -248,6 +250,7 @@ function Checkout() {
                                                 onChange={countryChange}
                                             >
                                                 <option value="">Select a country</option>
+                                                
                                                 {countries.map((country) => (
                                                     <option key={country.value} value={country.value}>
                                                         {country.label}
@@ -538,5 +541,3 @@ function Checkout() {
         </>
     );
 }
-
-export default Checkout;
