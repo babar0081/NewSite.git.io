@@ -4,10 +4,12 @@ import {discountedPrice} from "../app/Constants";
 import Swal from "sweetalert2";
 import {useSelector, useDispatch} from "react-redux";
 import {deleteItemsFromCartAsync, selectItems, updateCartAsync} from "../features/Cart/CartSlice";
-
 import {Link, Navigate} from "react-router-dom";
-import {selectLoggedInUser, updateUserAsync} from "../features/Auth/authSlice";
+import { updateUserAsync} from "../features/Auth/authSlice";
+import { selectUserInfo } from '../features/user/userSlice';
 import {createOrderAsyc, selectCurrentOrder} from "../features/order/orderSlice";
+
+
 
 const addresses = [
     {
@@ -27,8 +29,6 @@ const addresses = [
         phone: "03450694154",
     },
 ];
-
-
 export default function Checkout() {
     const countries = [
         {value: "AF", label: "Afghanistan"},
@@ -36,7 +36,8 @@ export default function Checkout() {
         {value: "AL", label: "Albania"},
         {value: "DZ", label: "Algeria"},
     ];
-    const user = useSelector(selectLoggedInUser);
+    const user = useSelector(selectUserInfo);
+    
     const {
         register,
         handleSubmit,
@@ -115,7 +116,9 @@ export default function Checkout() {
         });
     };
     const handleAddress = (e) => {
-        setSelectedAddress(user.addresses [e.target.value]);
+        // const selectedId = e.target.value;
+        // const selectedAddress = user.addresses.find(address => address.id === selectedId);
+        setSelectedAddress(user.addresses[e.target.value]);
     };
     const handlePayment = (e) => {
         setPaymentMethod(e.target.value);
@@ -153,8 +156,9 @@ export default function Checkout() {
         <>
             {!items.length && <Navigate to="/" replace={true}></Navigate>}
             {
-                currentOrder && <Navigate to={`/order-succes/${currentOrder.id}`} replace={true}></Navigate>
+                currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>
             }
+            console.log(currentOrder)
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                     <div className="lg:col-span-3 mt-10">
@@ -351,7 +355,7 @@ export default function Checkout() {
                                     </p>
 
                                     <ul role="list">
-                                        {user.addresses.map((address, index) => (
+                                    {user.addresses.map((address, index) =>  (
                                             <li
                                                 key={index}
                                                 className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-grey-300"
