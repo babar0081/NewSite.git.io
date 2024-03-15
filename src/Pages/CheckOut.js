@@ -5,11 +5,9 @@ import Swal from "sweetalert2";
 import {useSelector, useDispatch} from "react-redux";
 import {deleteItemsFromCartAsync, selectItems, updateCartAsync} from "../features/Cart/CartSlice";
 import {Link, Navigate} from "react-router-dom";
-import { updateUserAsync} from "../features/Auth/authSlice";
-import { selectUserInfo } from '../features/user/userSlice';
+import {selectLoggedInUser, updateUserAsync} from "../features/Auth/authSlice";
+import {selectUserInfo} from "../features/user/userSlice";
 import {createOrderAsyc, selectCurrentOrder} from "../features/order/orderSlice";
-
-
 
 const addresses = [
     {
@@ -29,32 +27,29 @@ const addresses = [
         phone: "03450694154",
     },
 ];
+const countries = [
+    {value: "AF", label: "Afghanistan"},
+    {value: "AX", label: "Åland Islands"},
+    {value: "AL", label: "Albania"},
+    {value: "DZ", label: "Algeria"},
+];
 export default function Checkout() {
-    const countries = [
-        {value: "AF", label: "Afghanistan"},
-        {value: "AX", label: "Åland Islands"},
-        {value: "AL", label: "Albania"},
-        {value: "DZ", label: "Algeria"},
-    ];
-    const user = useSelector(selectUserInfo);
-    
+    const user = useSelector(selectLoggedInUser);
+    console.log("user:", user); // Log the state of `user`
+
+    if (user) {
+        console.log("user.addresses:", user.addresses); // Log addresses if `user` exists
+
+        // ... your code that iterates through addresses
+    } else {
+        console.error("User object is not available yet."); // Handle the case where `user` is undefined
+    }
     const {
         register,
         handleSubmit,
         reset,
         formState: {errors},
     } = useForm();
-    const notification = (data) => {
-        console.log(data);
-
-        dispatch(updateUserAsync({...user, addresses: [...user.addresses, data]}))
-        .then(() => {})
-        .catch((error) => {
-            console.error("Login error:", error);
-            // Handle login error if needed
-        });
-        reset();
-    };
 
     const items = useSelector(selectItems);
     const dispatch = useDispatch();
@@ -115,54 +110,62 @@ export default function Checkout() {
             }
         });
     };
+    // const handleAddress = (e) => {
+    //     // const selectedId = e.target.value;
+    //     console.log(e.target.value)
+    //     // const selectedAddress = user.addresses.find(address => address.id === selectedId);
+    //     setSelectedAddress(user.addresses[e.target.value]);
+    // };
     const handleAddress = (e) => {
-        // const selectedId = e.target.value;
-        // const selectedAddress = user.addresses.find(address => address.id === selectedId);
+        console.log(e.target.value);
         setSelectedAddress(user.addresses[e.target.value]);
-    };
+      };
     const handlePayment = (e) => {
         setPaymentMethod(e.target.value);
     };
     const handleOrder = (e) => {
-        if (selectedAddress && paymentMethod){
-        const order = {
-            items, 
-            totalAmount, 
-            totalItems, 
-            user:user.id, 
-            paymentMethod,
-            selectedAddress,
-            status:'pending'
-            };
-        dispatch(createOrderAsyc(order));
-    }   
-    else {
-        Swal.fire({
-            icon: "info",
-            title: "",
-            timerProgressBar: true,
-            showConfirmButton: true,
-            timer: 1000, // Close the notification after 1.5 seconds
-        });
-    }
-
-}
-    const [selectedCountry, setSelectedCountry] = useState(null);
-
-    const countryChange = (event) => {
-        setSelectedCountry(event.target.value);
+    if (selectedAddress && paymentMethod) {
+      const order = {
+        items,
+        totalAmount,
+        totalItems,
+        user,
+        paymentMethod,
+        selectedAddress,
+      };
+      dispatch(createOrderAsyc(order));
+      // need to redirect from here to a new page of order success.
+    } else {
+            Swal.fire({
+                icon: "info",
+                title: "",
+                timerProgressBar: true,
+                showConfirmButton: true,
+                timer: 1000, // Close the notification after 1.5 seconds
+            });
+        }
     };
+    // const [selectedCountry, setSelectedCountry] = useState(null);
+
+    // const countryChange = (event) => {
+    //     setSelectedCountry(event.target.value);
+    // };
     return (
         <>
             {!items.length && <Navigate to="/" replace={true}></Navigate>}
-            {
-                currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>
-            }
+            {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
             console.log(currentOrder)
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                     <div className="lg:col-span-3 mt-10">
-                        <form className="bg-white px-5 py-6 " noValidate onSubmit={handleSubmit(notification)}>
+                        <form
+                            className="bg-white px-5 py-6 "
+                            noValidate
+                            onSubmit={handleSubmit((data) => {
+                                console.log(data);
+                                dispatch(updateUserAsync({...user, addresses: [...user.addresses, data]}));
+                            })}
+                        >
                             <div className="space-y-12">
                                 <div className="border-b border-gray-900/10 pb-12 ">
                                     <h2 className="text-2xl font-semibold leading-7 text-gray-900">
@@ -183,7 +186,7 @@ export default function Checkout() {
                                             <div className="mt-2">
                                                 <input
                                                     type="text"
-                                                    {...register("First-Name", {required: "First-Name is Required"})}
+                                                    {...register("first-name", {required: "First-Name is Required"})}
                                                     id="first-name"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
@@ -225,7 +228,7 @@ export default function Checkout() {
                                         </div>
                                         <div className="sm:col-span-4">
                                             <label
-                                                htmlFor="email"
+                                                htmlFor="Phone"
                                                 className="block text-sm font-medium leading-6 text-gray-900"
                                             >
                                                 Phone Number
@@ -234,7 +237,7 @@ export default function Checkout() {
                                                 <input
                                                     id="Phone"
                                                     {...register("Phone", {required: "Phone Number is Required"})}
-                                                    type="tell"
+                                                    type="tel"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
@@ -247,7 +250,7 @@ export default function Checkout() {
                                             >
                                                 Country
                                             </label>
-                                            <select
+                                            {/* <select
                                                 id="country"
                                                 {...register("country", {required: "country is Required"})}
                                                 value={selectedCountry}
@@ -260,7 +263,17 @@ export default function Checkout() {
                                                         {country.label}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
+                                            <div className="mt-2">
+                                                <input
+                                                    type="text"
+                                                    {...register("country", {
+                                                        required: "Country is Required",
+                                                    })}
+                                                    id="country"
+                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                />
+                                            </div>
                                         </div>
 
                                         <div className="col-span-full">
@@ -274,7 +287,7 @@ export default function Checkout() {
                                                 <input
                                                     type="text"
                                                     {...register("street-address", {
-                                                        required: "Street-Address is Required",
+                                                        required: "street-Address is Required",
                                                     })}
                                                     id="street-address"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -355,7 +368,7 @@ export default function Checkout() {
                                     </p>
 
                                     <ul role="list">
-                                    {user.addresses.map((address, index) =>  (
+                                        {user.addresses.map((address, index) => (
                                             <li
                                                 key={index}
                                                 className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-grey-300"

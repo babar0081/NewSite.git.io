@@ -2,9 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchLoggedInUserOrders,updateUser,fetchLoggedInUser} from './userAPI';
 
 
+/* The `initialState` constant is defining the initial state for the user slice of the Redux store. It
+includes three properties:
+1. `userOrders`: An empty array that will store the user's orders.
+2. `status`: Initialized to 'idle', which indicates the current status of asynchronous operations
+like loading or success.
+3. `userInfo`: Initialized to `null`, which will store the information of the logged-in user. */
 const initialState = {
   userOrders: [],
   status: 'idle',
+  userInfo:null,
+  loggegInUser:null,
+  error:null,
 };
 
 
@@ -27,8 +36,8 @@ export const fetchLoggedInUserAsync = createAsyncThunk(
 
 export const updateUserAsync = createAsyncThunk(
   'user/updateUser',
-  async (id) => {
-    const response = await updateUser(id);
+  async (update) => {
+    const response = await updateUser(update);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -68,7 +77,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userOrders = action.payload;
+        state.loggegInUser = action.payload;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = 'loading';
