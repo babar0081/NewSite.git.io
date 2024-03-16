@@ -1,5 +1,5 @@
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {discountedPrice} from "../app/Constants";
 import Swal from "sweetalert2";
 import {useSelector, useDispatch} from "react-redux";
@@ -7,7 +7,7 @@ import {deleteItemsFromCartAsync, selectItems, updateCartAsync} from "../feature
 import {Link, Navigate} from "react-router-dom";
 import {selectLoggedInUser, updateUserAsync} from "../features/Auth/authSlice";
 import {selectUserInfo} from "../features/user/userSlice";
-import {createOrderAsyc, selectCurrentOrder} from "../features/order/orderSlice";
+import {createOrderAsyc, createOrderAsync, selectCurrentOrder} from "../features/order/orderSlice";
 
 const addresses = [
     {
@@ -35,14 +35,14 @@ const countries = [
 ];
 export default function Checkout() {
     const user = useSelector(selectLoggedInUser);
-    console.log("user:", user); // Log the state of `user`
+    // console.log("user:", user); // Log the state of `user`
 
     if (user) {
-        console.log("user.addresses:", user.addresses); // Log addresses if `user` exists
+        // console.log("user.addresses:", user.addresses); // Log addresses if `user` exists
 
         // ... your code that iterates through addresses
     } else {
-        console.error("User object is not available yet."); // Handle the case where `user` is undefined
+        // console.error("User object is not available yet."); // Handle the case where `user` is undefined
     }
     const {
         register,
@@ -117,31 +117,36 @@ export default function Checkout() {
     //     setSelectedAddress(user.addresses[e.target.value]);
     // };
     const handleAddress = (e) => {
-        console.log(e.target.value);
+        
         setSelectedAddress(user.addresses[e.target.value]);
       };
     const handlePayment = (e) => {
+        
         setPaymentMethod(e.target.value);
     };
+    useEffect(() => {
+        console.log(paymentMethod);
+    }, [paymentMethod]);
+
     const handleOrder = (e) => {
     if (selectedAddress && paymentMethod) {
       const order = {
         items,
         totalAmount,
         totalItems,
-        user,
+        user:user.id,
         paymentMethod,
         selectedAddress,
       };
-      dispatch(createOrderAsyc(order));
+      dispatch(createOrderAsync(order));
       // need to redirect from here to a new page of order success.
     } else {
             Swal.fire({
                 icon: "info",
-                title: "",
+                title: "Your Cant Place Order WithOut Selecting Address And Payment Method,Please Set Your Payment Method And Address",
                 timerProgressBar: true,
                 showConfirmButton: true,
-                timer: 1000, // Close the notification after 1.5 seconds
+                timer: 3500, // Close the notification after 1.5 seconds
             });
         }
     };
@@ -153,8 +158,8 @@ export default function Checkout() {
     return (
         <>
             {!items.length && <Navigate to="/" replace={true}></Navigate>}
-            {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
-            console.log(currentOrder)
+            
+            
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                     <div className="lg:col-span-3 mt-10">
@@ -162,8 +167,9 @@ export default function Checkout() {
                             className="bg-white px-5 py-6 "
                             noValidate
                             onSubmit={handleSubmit((data) => {
-                                console.log(data);
-                                dispatch(updateUserAsync({...user, addresses: [...user.addresses, data]}));
+                                
+                                dispatch(updateUserAsync({...user, addresses: [...user.addresses, data]}))
+                                reset();
                             })}
                         >
                             <div className="space-y-12">
@@ -178,7 +184,7 @@ export default function Checkout() {
                                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                         <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="first-name"
+                                                htmlFor="firstname"
                                                 className="block text-sm font-medium leading-6 text-gray-900"
                                             >
                                                 First name
@@ -186,8 +192,8 @@ export default function Checkout() {
                                             <div className="mt-2">
                                                 <input
                                                     type="text"
-                                                    {...register("first-name", {required: "First-Name is Required"})}
-                                                    id="first-name"
+                                                    {...register("firstname", {required: "First Name is Required"})}
+                                                    id="firstname"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
@@ -195,7 +201,7 @@ export default function Checkout() {
 
                                         <div className="sm:col-span-3">
                                             <label
-                                                htmlFor="last-name"
+                                                htmlFor="lastname"
                                                 className="block text-sm font-medium leading-6 text-gray-900"
                                             >
                                                 Last name
@@ -203,8 +209,8 @@ export default function Checkout() {
                                             <div className="mt-2">
                                                 <input
                                                     type="text"
-                                                    {...register("last-name", {required: "Last-Name is Required"})}
-                                                    id="last-name"
+                                                    {...register("lastname", {required: "Last Name is Required"})}
+                                                    id="lastname"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
@@ -278,7 +284,7 @@ export default function Checkout() {
 
                                         <div className="col-span-full">
                                             <label
-                                                htmlFor="street-address"
+                                                htmlFor="street"
                                                 className="block text-sm font-medium leading-6 text-gray-900"
                                             >
                                                 Street address
@@ -286,10 +292,10 @@ export default function Checkout() {
                                             <div className="mt-2">
                                                 <input
                                                     type="text"
-                                                    {...register("street-address", {
+                                                    {...register("street", {
                                                         required: "street-Address is Required",
                                                     })}
-                                                    id="street-address"
+                                                    id="street"
                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 />
                                             </div>
@@ -355,7 +361,7 @@ export default function Checkout() {
                                             type="submit"
                                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                         >
-                                            Save Address
+                                            Add Address
                                         </button>
                                     </div>
                                 </div>
@@ -371,7 +377,7 @@ export default function Checkout() {
                                         {user.addresses.map((address, index) => (
                                             <li
                                                 key={index}
-                                                className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-grey-300"
+                                                className="flex justify-between gap-x-6 m-4  px-5 py-5 border-solid border-2 border-grey-300"
                                             >
                                                 <div className="flex min-w-0 gap-x-4">
                                                     <input
@@ -383,24 +389,29 @@ export default function Checkout() {
                                                     />
 
                                                     <div className="min-w-0 flex-auto">
-                                                        <p className="text-sm font-semibold leading-6 text-gray-900">
-                                                            {address.name}
+                                                        <p className="text-lg font-bold leading-6 text-gray-900">
+                                                            {address.firstname+" "+address.lastname} 
+                                                            
                                                         </p>
                                                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
                                                             {address.city}
                                                         </p>
                                                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                            {address.street}
+                                                            {address.street + " " + address.region }
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                                                     <p className="text-sm leading-6 text-gray-900">
-                                                        Phone :{address.phone}
+                                                        Phone :{address.Phone}
                                                     </p>
                                                     <p className="text-sm leading-6 text-gray-900">
-                                                        {address.PostalCode}
+                                                        {address.email}
                                                     </p>
+                                                    <p className="text-sm leading-6 text-gray-900">
+                                                        {address.pinCode}
+                                                    </p>
+                                                   
                                                 </div>
                                             </li>
                                         ))}
@@ -532,8 +543,8 @@ export default function Checkout() {
                                     <p className="mt-0.5 text-sm text-gray-500">
                                         Shipping and taxes calculated at checkout.
                                     </p>
-                                    <div className="mt-6 cursor-pointer">
-                                        <div onClick={handleOrder}>Pay and Order</div>
+                                    <div>
+                                        <div  className= "cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"onClick={handleOrder}>Pay and Order</div>
                                     </div>
                                     <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                         <p>
@@ -541,7 +552,7 @@ export default function Checkout() {
                                             <Link to="/">
                                                 <button
                                                     type="button"
-                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                    className=" cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                                 >
                                                     Continue Shopping
                                                     <span aria-hidden="true"> &rarr;</span>

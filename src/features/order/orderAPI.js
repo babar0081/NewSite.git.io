@@ -8,8 +8,10 @@ export function createOrder(order) {
       });
       const data = await response.json();
       resolve({ data });
+      console.log(data)
     } catch (error) { // Catch any errors that occur during the fetch operation
-      reject(error); // Reject the Promise with the error
+      reject(error); 
+      console.log(error)// Reject the Promise with the error
     }
   });
 }

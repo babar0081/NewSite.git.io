@@ -22,7 +22,7 @@ server.use('/brands', BrandsRouter.router)
 server.use('/user', userRouter.router)
 server.use('/auth', authRouter.router)
 server.use('/cart', cartRouter.router)
-server.use('/order', orderRouter.router)
+server.use('/orders', orderRouter.router)
 
 main().catch(err=> console.log(err))
 async function main() {

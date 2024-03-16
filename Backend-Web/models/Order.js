@@ -9,9 +9,9 @@ const orderSchema = new Schema({
     user :{ type: Schema.Types.ObjectId, ref: 'user',required: true},
     totalAmount:{type:Number},
     totalitems:{type:Number},
-    paymentMethod:{type:Number,required:true},
+    paymentMethod:{type:String,required:true},
     selectedAddress:{type:Schema.Types.Mixed,required:true},
-    status:{type:Number,default:'pending'},
+    status:{type:String,default:'pending'},
     
 })
 

@@ -19,6 +19,8 @@ exports.createOrder = async (req, res) => {
     // const result = await doc.populate('product');
     res.status(201).json(doc);
   } catch (err) {
+    console.log(err)
+    console.log("order cant created")
     res.status(400).json(err);
   }
 };
